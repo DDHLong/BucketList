@@ -1,28 +1,18 @@
-import { useState } from "react";
 import Item from "./Item";
+import useList from "../custom-hook/useList";
 
 function Card() {
-  const [inputValue, setInputValue] = useState("");
-  const [items, setItems] = useState([]);
-
-  console.log(items);
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      // Prevent adding empty strings to the array
-      if (inputValue.trim() !== "") {
-        setItems([...items, inputValue.trim()]);
-        setInputValue(""); // Clear the input field after adding
-      }
-    }
-  };
+  const {
+    inputValue,
+    items,
+    handleInputChange,
+    handleKeyPress,
+    handleToggleCheck,
+    handleDeleteItem
+  } = useList();
 
   return (
-    <div className="w-[700px] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 p-8 text-gray-950">
+    <div className="w-[300px] md:w-[500px] lg:w-[700px] bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 p-8 text-gray-950">
       <h1 className="font-extrabold text-3xl">BUCKET LIST</h1>
       <div className="relative mt-4">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -39,7 +29,7 @@ function Card() {
         <input
           type="text"
           id="todo"
-          className="border-none focus:ring-0 focus:ring-offset-0 focus:outline-none text-gray-900 text-sm  block w-full bg-transparent ps-11 p-2.5"
+          className="border-none focus:ring-0 focus:ring-offset-0 focus:outline-none text-sm block w-full bg-transparent ps-11 p-2.5 text-white"
           placeholder="Add you goal..."
           value={inputValue}
           onChange={handleInputChange}
@@ -47,8 +37,13 @@ function Card() {
         />
       </div>
       {items.map((item, index) => (
-          <Item key={index} text={item}></Item>
-        ))}
+        <Item
+          key={index}
+          item={item}
+          handleToggleCheck={handleToggleCheck}
+          handleDeleteItem={handleDeleteItem}
+        ></Item>
+      ))}
     </div>
   );
 }

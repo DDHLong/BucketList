@@ -1,19 +1,29 @@
-import { useState } from "react";
 import Checkbox from "./Checkbox";
 import { cn } from "../lib/utils";
 import PropTypes from "prop-types";
 
-function Item({ text }) {
-  const [check, setCheck] = useState(false);
-
-  const onToggle = () => {
-    setCheck(!check);
-  };
-
+function Item({ item, handleToggleCheck, handleDeleteItem }) {
   return (
     <div className="flex justify-starts items-center mt-3">
-      <Checkbox check={check} onToggle={onToggle} />
-      <p className={cn("text-white",{ "line-through text-gray-400": check })}>{text}</p>
+      <Checkbox check={item.check} onToggle={handleToggleCheck} id={item.id} />
+      <p
+        className={cn("text-white", {
+          "line-through text-gray-400": item.check,
+        })}
+      >
+        {item.name}
+      </p>
+      <button className="ml-auto" onClick={() => handleDeleteItem(item.id)}>
+        <svg
+          className="w-5 h-5 text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 18 20"
+        >
+          <path d="M17 4h-4V2a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v2H1a1 1 0 0 0 0 2h1v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1a1 1 0 1 0 0-2ZM7 2h4v2H7V2Zm1 14a1 1 0 1 1-2 0V8a1 1 0 0 1 2 0v8Zm4 0a1 1 0 0 1-2 0V8a1 1 0 0 1 2 0v8Z" />
+        </svg>
+      </button>
     </div>
   );
 }
@@ -21,5 +31,7 @@ function Item({ text }) {
 export default Item;
 
 Item.propTypes = {
-  text: PropTypes.string,
+  item: PropTypes.object,
+  handleToggleCheck: PropTypes.func,
+  handleDeleteItem: PropTypes.func,
 };
